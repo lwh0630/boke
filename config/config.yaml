@@ -1,0 +1,34 @@
+web:
+  name: "web_golang"
+  mode: "Dev"
+  port: 8081
+  version: "1.24.6"
+  start_time: "2023-03-02"
+  machine_id: 1
+
+# 日志
+log:
+  level: "debug"
+  filename: "./web_app.log"
+  max_size: 5
+  max_age: 1
+  max_backups: 3
+
+# mysql
+mysql:
+  host: "47.115.203.133"
+  port: 3306
+  user: "root"
+  password: "0630"
+  dbname: "bluebell"
+  max_open: 200
+  max_idle: 10
+
+# redis
+redis:
+  host: "47.115.203.133"
+  user: ""
+  password: ""
+  port: 6379
+  dbname: 0
+  pool_size: 100
