@@ -34,16 +34,21 @@ func SetupRoutes() (engine *gin.Engine, err error) {
 
 	// 设置路由组
 	v1 := r.Group("/api/v1")
-	// 使用JWT中间件
-	v1.Use(middlewares.JWTMiddleware())
 	// 注册
 	v1.POST("/signup", controllers.RegisterHandler)
 	// 登录
 	v1.POST("/login", controllers.LoginHandler)
 
+	// 社区信息相关
 	{
-		v1.GET("/community", controllers.communityHandler)
+		v1.GET("/community", controllers.CommunityHandler)
+		v1.GET("/community/:id", controllers.CommunityDetailHandler)
+
+		v1.POST("/post")
 	}
+
+	// 使用JWT中间件, 后续 /api/v1 操作均需要认证
+	v1.Use(middlewares.JWTMiddleware())
 
 	// 测试登录状态
 	r.GET("/ping", middlewares.JWTMiddleware(), func(c *gin.Context) {
@@ -51,6 +56,7 @@ func SetupRoutes() (engine *gin.Engine, err error) {
 			"msg": "pong",
 		})
 	})
+
 	// 404 page
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"msg": http.StatusText(http.StatusNotFound)})

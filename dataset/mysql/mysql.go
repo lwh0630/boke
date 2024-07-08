@@ -37,5 +37,5 @@ func CloseMysql() {
 	if err != nil {
 		fmt.Printf("close mysql err: %v\n", err)
 	}
-	fmt.Println("close mysql success")
+	fmt.Println("mysql closed")
 }

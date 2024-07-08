@@ -9,10 +9,11 @@ import (
 var Cfg = new(AppConfig)
 
 type AppConfig struct {
-	*WebConfig   `mapstructure:"web"`
-	*LogConfig   `mapstructure:"log"`
-	*MySQLConfig `mapstructure:"mysql"`
-	*RedisConfig `mapstructure:"redis"`
+	*WebConfig    `mapstructure:"web"`
+	*MyAuthConfig `mapstructure:"auth"`
+	*LogConfig    `mapstructure:"log"`
+	*MySQLConfig  `mapstructure:"mysql"`
+	*RedisConfig  `mapstructure:"redis"`
 }
 
 type WebConfig struct {
@@ -22,6 +23,10 @@ type WebConfig struct {
 	Port      int    `mapstructure:"port"`
 	StartTime string `mapstructure:"start_time"`
 	MachineID int64  `mapstructure:"machine_id"`
+}
+
+type MyAuthConfig struct {
+	JwtExpire int `mapstructure:"jwt_expire"`
 }
 
 type MySQLConfig struct {

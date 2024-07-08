@@ -19,7 +19,7 @@ type ResponseController struct {
 	Data interface{} `json:"data"`
 }
 
-func ResponseOk(c *gin.Context, data interface{}) {
+func ResponseOk(c *gin.Context, data any) {
 	c.JSON(http.StatusOK, &ResponseController{
 		Code: CodeSuccess,
 		Msg:  codeMsg[CodeSuccess],
@@ -35,7 +35,7 @@ func ResponseError(c *gin.Context, code CodeRes) {
 	})
 }
 
-func ResponseErrorWithMsg(c *gin.Context, code CodeRes, msg interface{}) {
+func ResponseErrorWithMsg(c *gin.Context, code CodeRes, msg any) {
 	c.JSON(http.StatusBadRequest, &ResponseController{
 		Code: code,
 		Msg:  msg,

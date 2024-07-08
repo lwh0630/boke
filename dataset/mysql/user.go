@@ -11,12 +11,6 @@ import (
 // 加密前缀
 const secret = "http://www.duxinyu.love"
 
-var (
-	ErrUserNotExist    = errors.New("用户不存在")
-	ErrUserExist       = errors.New("用户已存在")
-	ErrInvalidPassWord = errors.New("用户名或密码错误")
-)
-
 // CheckUserExistByUsername 通过用户名，检测用户是否存在
 func CheckUserExistByUsername(username string) (err error) {
 	sqlStr := "select count(user_id) from user where username = ?"

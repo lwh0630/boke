@@ -1,12 +1,11 @@
 package jwt
 
 import (
+	"bluebell/config"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )
-
-const TokenExpireDuration = time.Hour * 24 * 30
 
 var mySecret = []byte("wenhailiu@mail.ustc.edu.cn")
 
@@ -21,7 +20,7 @@ func GenToken(userID int64, userName string) (string, error) {
 		UserID:   userID,
 		Username: userName,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(),
+			ExpiresAt: time.Now().Add(time.Duration(config.Cfg.JwtExpire) * time.Hour).Unix(),
 			Issuer:    "wenhailiu@bluebell.com",
 		},
 	}

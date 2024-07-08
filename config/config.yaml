@@ -6,11 +6,15 @@ web:
   start_time: "2023-03-02"
   machine_id: 1
 
+# 认证
+auth:
+  jwt_expire: 8760  # 单位：h
+
 # 日志
 log:
   level: "debug"
   filename: "./web_app.log"
-  max_size: 5
+  max_size: 2
   max_age: 1
   max_backups: 3
 
