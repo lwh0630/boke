@@ -7,31 +7,33 @@ const (
 	CodeInvalidParams
 	CodeUserExist
 	CodeUserNotExist
-	CodeErrorPassword
+	CodeInvalidPassword
 	CodeServerBusy
-	CodeErrorOther
 
 	CodeNeedLogin
-	COdeInvalidToken
+	CodeInvalidToken
+
+	CodeErrorPassword
 )
 
 var codeMsg = map[CodeRes]string{
-	CodeSuccess:       "成功",
-	CodeInvalidParams: "请求参数错误",
-	CodeUserExist:     "用户已经存在",
-	CodeUserNotExist:  "用户不存在",
-	CodeErrorPassword: "用户名或密码错误",
-	CodeServerBusy:    "服务器忙",
-	CodeErrorOther:    "未知错误",
+	CodeSuccess:         "success",
+	CodeInvalidParams:   "请求参数错误",
+	CodeUserExist:       "用户名已存在",
+	CodeUserNotExist:    "用户名不存在",
+	CodeInvalidPassword: "用户名或密码错误",
+	CodeServerBusy:      "服务繁忙",
 
 	CodeNeedLogin:    "需要登录",
-	COdeInvalidToken: "无效Token",
+	CodeInvalidToken: "无效的token",
+
+	CodeErrorPassword: "用户密码错误",
 }
 
 func (ctrl CodeRes) Msg() string {
 	msg, ok := codeMsg[ctrl]
 	if !ok {
-		return codeMsg[CodeErrorOther]
+		return codeMsg[CodeServerBusy]
 	}
 	return msg
 }

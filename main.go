@@ -5,6 +5,7 @@ import (
 	"bluebell/dataset/mysql"
 	"bluebell/dataset/redis"
 	"bluebell/logger"
+	"bluebell/pkg"
 	"bluebell/pkg/snowflake"
 	"bluebell/routes"
 	"context"
@@ -72,7 +73,7 @@ func main() {
 		}
 	}()
 	// 显示网址
-	color.Green("http://localhost:%d\n", config.Cfg.WebConfig.Port)
+	pkg.PrintIPAddress()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

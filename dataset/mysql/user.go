@@ -52,6 +52,16 @@ func Login(p *models.User) (err error) {
 	return
 }
 
+func GetUserById(id int64) (user *models.User, err error) {
+	user = &models.User{}
+	sqlStr := "select user_id, username from user where user_id = ?"
+	err = db.Get(user, sqlStr, id)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
 // md5加密
 func encryptPassword(oPassword string) string {
 	h := md5.New()

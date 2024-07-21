@@ -22,14 +22,14 @@ func JWTMiddleware() func(c *gin.Context) {
 		}
 		parts := strings.SplitN(authHeader, " ", 2)
 		if !(len(parts) == 2 && parts[0] == "Bearer") {
-			controllers.ResponseError(c, controllers.COdeInvalidToken)
+			controllers.ResponseError(c, controllers.CodeInvalidToken)
 			c.Abort()
 			return
 		}
 		tokenString := parts[1]
 		mc, err := jwt.ParseToken(tokenString)
 		if err != nil {
-			controllers.ResponseError(c, controllers.COdeInvalidToken)
+			controllers.ResponseError(c, controllers.CodeInvalidToken)
 			c.Abort()
 			return
 		}

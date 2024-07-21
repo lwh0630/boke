@@ -39,16 +39,17 @@ func SetupRoutes() (engine *gin.Engine, err error) {
 	// 登录
 	v1.POST("/login", controllers.LoginHandler)
 
+	// 使用JWT中间件, 后续 /api/v1 操作均需要认证
+	v1.Use(middlewares.JWTMiddleware())
 	// 社区信息相关
 	{
 		v1.GET("/community", controllers.CommunityHandler)
 		v1.GET("/community/:id", controllers.CommunityDetailHandler)
 
-		v1.POST("/post")
+		v1.POST("/post", controllers.CreatePostHandler)
+		v1.GET("/post/:id", controllers.GetPostDetailHandler)
+		v1.GET("/posts", controllers.GetPostListHandler)
 	}
-
-	// 使用JWT中间件, 后续 /api/v1 操作均需要认证
-	v1.Use(middlewares.JWTMiddleware())
 
 	// 测试登录状态
 	r.GET("/ping", middlewares.JWTMiddleware(), func(c *gin.Context) {
