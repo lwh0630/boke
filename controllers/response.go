@@ -16,7 +16,7 @@ import (
 type ResponseController struct {
 	Code CodeRes     `json:"code"`
 	Msg  interface{} `json:"msg"`
-	Data interface{} `json:"data"`
+	Data interface{} `json:"data,omitempty"`
 }
 
 func ResponseOk(c *gin.Context, data any) {

@@ -49,6 +49,8 @@ func SetupRoutes() (engine *gin.Engine, err error) {
 		v1.POST("/post", controllers.CreatePostHandler)
 		v1.GET("/post/:id", controllers.GetPostDetailHandler)
 		v1.GET("/posts", controllers.GetPostListHandler)
+
+		v1.POST("/vote", controllers.PostVoteController)
 	}
 
 	// 测试登录状态

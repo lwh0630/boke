@@ -8,3 +8,8 @@ const (
 	KeyPostScore      = "post:score" // ZSet;帖子及投票的分数
 	KeyPostVotePrefix = "post:vote:" // ZSet;记录用户以及投票类型;参数是post id
 )
+
+// GetRedisKey 返回加上命名空间的索引
+func GetRedisKey(key string) string {
+	return KeyPrefix + key
+}

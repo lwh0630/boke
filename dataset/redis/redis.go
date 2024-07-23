@@ -8,7 +8,10 @@ import (
 	"golang.org/x/net/context"
 )
 
-var rdb *redis.Client
+var (
+	rdb *redis.Client
+	Nil = redis.Nil
+)
 
 func InitRedis() (err error) {
 	rdb = redis.NewClient(&redis.Options{
