@@ -79,3 +79,41 @@ func GetPostList(pageNum int64, pageSize int64) ([]*models.ApiPostDetail, error)
 	}
 	return apiPostList, nil
 }
+
+// GetPostListV2 返回排序后帖子列表
+func GetPostListV2(p *models.ParamPostList) ([]*models.ApiPostDetail, error) {
+	// 在redis中查询数据
+	ids, err := redis.GetPostIDListInOrder(p)
+	if err != nil {
+		return nil, err
+	}
+	// 去mysql数据库
+	posts, err := mysql.GetPostByIndexes(ids)
+	if err != nil {
+		return nil, err
+	}
+	// 提前查询好每篇帖子的投票数
+	voteData, err := redis.GetPostVoteData(ids)
+	apiPostList := make([]*models.ApiPostDetail, 0, len(posts))
+	for idx, post := range posts {
+		// 获取作者昵称
+		user, err := mysql.GetUserById(post.AuthorId)
+		if err != nil {
+			return nil, err
+		}
+		// 获取社区信息
+		community, err := mysql.GetCommunityDetailByID(post.CommunityId)
+		if err != nil {
+			return nil, err
+		}
+
+		postDetail := &models.ApiPostDetail{
+			AuthorName:      user.Username,
+			VoteNum:         voteData[idx],
+			Post:            post,
+			CommunityDetail: community,
+		}
+		apiPostList = append(apiPostList, postDetail)
+	}
+	return apiPostList, nil
+}

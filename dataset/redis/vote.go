@@ -4,7 +4,6 @@ import (
 	"bluebell/models"
 	"errors"
 	"github.com/redis/go-redis/v9"
-	"golang.org/x/net/context"
 	"math"
 	"strconv"
 	"time"
@@ -16,8 +15,8 @@ const (
 )
 
 var (
-	ctx            = context.Background()
-	ErrVoteTimeout = errors.New("超出投票时间")
+	ErrVoteTimeout  = errors.New("超出投票时间")
+	ErrVoteRepeated = errors.New("不允许重复同一投票")
 )
 
 func CreatePost(postID int64) error {
@@ -44,6 +43,9 @@ func VoteForPost(p *models.ParamVoteData) (err error) {
 	pipeline := rdb.TxPipeline()
 	oldValue := rdb.ZScore(ctx, GetRedisKey(KeyPostVotePrefix+postID), userID).Val()
 	diff := math.Abs(oldValue - value)
+	if math.Abs(oldValue-value) < 1e-3 {
+		return ErrVoteRepeated
+	}
 	if value > oldValue {
 		pipeline.ZIncrBy(ctx, GetRedisKey(KeyPostScore), diff*scorePerVote, postID)
 	} else {

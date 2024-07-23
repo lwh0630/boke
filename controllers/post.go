@@ -61,6 +61,7 @@ func GetPostDetailHandler(c *gin.Context) {
 	ResponseOk(c, post)
 }
 
+// GetPostListHandler 根据参数获取帖子列表
 func GetPostListHandler(c *gin.Context) {
 	// 获取分页参数
 	pageNumStr := c.DefaultQuery("page", "1")
@@ -77,6 +78,38 @@ func GetPostListHandler(c *gin.Context) {
 
 	// 获取数据
 	data, err := logic.GetPostList(pageNum, pageSize)
+	if err != nil {
+		zap.L().Error("logic.GetPostList failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	// 返回响应
+	ResponseOk(c, data)
+}
+
+// GetPostListHandlerV2 根据参数获取帖子列表V2，多加排序功能
+func GetPostListHandlerV2(c *gin.Context) {
+	// 获取分页参数
+	p := &models.ParamPostList{
+		Page:  1,
+		Size:  10,
+		Order: models.OrderByTime,
+	}
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("get post list with invalid param", zap.Error(err))
+		ResponseError(c, CodeInvalidParams)
+		return
+	}
+
+	zap.L().Info("page", zap.Int64("pageNum", p.Page), zap.Int64("pageSize", p.Size), zap.String("order", p.Order))
+
+	if p.Page <= 0 || p.Size <= 0 {
+		zap.L().Error("get post list with invalid param", zap.Any("param", p))
+		ResponseError(c, CodeInvalidParams)
+		return
+	}
+	// 获取数据
+	data, err := logic.GetPostListV2(p)
 	if err != nil {
 		zap.L().Error("logic.GetPostList failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)

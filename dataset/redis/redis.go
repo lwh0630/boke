@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	ctx = context.Background()
 	rdb *redis.Client
 	Nil = redis.Nil
 )

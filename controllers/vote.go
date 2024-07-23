@@ -26,6 +26,7 @@ func PostVoteController(c *gin.Context) {
 
 	uid, err := GetCurrentUserID(c)
 	if err != nil {
+		zap.L().Error("getCurrentUserID error", zap.Error(err))
 		ResponseError(c, CodeNeedLogin)
 		return
 	}

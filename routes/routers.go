@@ -50,6 +50,9 @@ func SetupRoutes() (engine *gin.Engine, err error) {
 		v1.GET("/post/:id", controllers.GetPostDetailHandler)
 		v1.GET("/posts", controllers.GetPostListHandler)
 
+		// 根据时间或分数获取帖子列表
+		v1.GET("/posts2", controllers.GetPostListHandlerV2)
+
 		v1.POST("/vote", controllers.PostVoteController)
 	}
 
